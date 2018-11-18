@@ -3,59 +3,65 @@
 from itertools import permutations
 
 def main():
-	limit, counter = 1000000
-
-    primes = [] #index 0 is equal to 2 in the real world, make sure to account for that transition.
-    
-    for i in range(0, limit - 2):
-		primes[i] = True
+	limit = 100
+	counter = 0
 	
-	primes = seive(primes, limit)
+	testList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    toPermute = []
+	print binarySearch(testList, 109)
+
+	primes = findPrimes(limit)
+
+	toPermute = []
+	#print primes
 	for i in primes:
-        toPermute = list(str(i))
-        isCircular = True
+		isCircular = True
 
-        for i in permutations(toPermute):
-            if not search(primes, int("".join(i)):
-                isCircular = False
-                break
-        
-        if isCircular:
-        counter += 1
+		print set(permutations(str(i)))
+
+		for j in set(permutations(str(i))):
+			#print j
+			if not binarySearch(primes, int("".join(j))):
+				#print binarySearch(primes, int("".join(j)))
+				isCircular = False
+				break
+
+		#print ""
+
+		if isCircular == True:
+			counter += 1
+	
+	print counter
 
 	
-def seive(a, n): #Implementation of the Seive of Eratosthenes
-	for i in range(2, n ** (1/2)):
-		if a[i]:
-			for j in range(i ** 2, n):
-				a[j] = False
-	
-	toReturn = []
-	
-	for i in range(0, len(primes)):
-		if a[i]:
-			toReturn.append(i)
+def findPrimes(n): #Returns a list of primes below n
+	sieve = [True] * n
 
-    return toReturn
+	for i in range(3, int(n**0.5) + 1, 2):
+		if sieve[i]:
+			sieve[i*i :: 2*i] = [False]*((n-i*i-1)/(2*i)+1)
+
+	return [2] + [i for i in range(3, n, 2) if sieve[i]]
 	
-def search(a, n): #Implementation of Binary search, shell method for easy calls
+def binarySearch(a, n): #Implementation of Binary search, shell method for easy calls
+	#print (len(a))
 	search(a, n, 0, len(a) - 1)
 	
 	
 def search(a, n, start, end): #Underlying method for search.
-	if (start > end):
+	if start >= end:
 		return False
 	else:
-		m = a[(start + end) / 2]
-		
-		if m = n:
+		m = int((start + end) / 2)
+
+		if a[m] == n:
 			return True
-		elif m > n:
-            return search(a, n, m+1, end)
-        elif m < n:
-            return search(a, n, start, m-1)
+		elif a[m] > n:
+			result = search(a, n, start, m-1)
+			return result
+		elif a[m] < n:
+			result = search(a, n, m+1, end)
+			return result
 	
 	
 if __name__ == "__main__":
